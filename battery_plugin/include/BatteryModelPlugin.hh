@@ -27,19 +27,13 @@
 #include <gazebo/transport/TransportTypes.hh>
 #include <gazebo/gazebo.hh>
 
-<<<<<<< local
 #include <geometry_msgs/Pose.h>
 
-=======
->>>>>>> other
 #include <gazebo_plugins/PubQueue.h>
 #include "battery_plugin/Battery.h"
 
-<<<<<<< local
 #include <geometry_msgs/Twist.h>
 
-=======
->>>>>>> other
 namespace gazebo
 {
   class BatteryModelPlugin : public ModelPlugin
@@ -55,29 +49,18 @@ namespace gazebo
 
     private: void OnUpdate();
 
-<<<<<<< local
     private: void OnVelMsg(ConstPosePtr &_msg);
-=======
-    private: void OnMoveCmdMsg(ConstPosePtr &_msg);
->>>>>>> other
 
     private: void WriteBatteryState(const common::Time &_simTime,
                                     const common::Time &_wallTime,
                                     bool _force);
 
-<<<<<<< local
     private: void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
 
-=======
->>>>>>> other
     private: double lastUpdate;
 
     private: transport::NodePtr node;
-<<<<<<< local
     private: transport::SubscriberPtr velSub;
-=======
-    private: transport::SubscriberPtr moveSub;
->>>>>>> other
     private: physics::JointPtr leftWheel, rightWheel;
     private: double wheelSpeed[2];
     private: double torque;
@@ -91,14 +74,11 @@ namespace gazebo
     private: double nominalVoltage;     // V
     private: double nominalDischargeCurrent; // A
 
-<<<<<<< local
     
     private: ros::Subscriber cmd_vel_subscriber_;
 
     private: ros::Publisher cmd_vel_throttle_publisher_;
 
-=======
->>>>>>> other
     /// \brief The absolute wall time when the run started
     private: common::Time runStartTimeWall;
 
@@ -126,7 +106,7 @@ namespace gazebo
     private: PubQueue<battery_plugin::Battery>::Ptr pubBatteryMsgQueue;
 
     /// \brief ros node handle
-    private: ros::NodeHandle *rosNode;
+    private: ros::NodeHandle* rosNode;
 
     // ros publish multi queue, prevents publish() blocking
     private: PubMultiQueue* pmq;

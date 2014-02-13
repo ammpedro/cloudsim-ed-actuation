@@ -105,42 +105,25 @@
       <xyz>0 1 0</xyz>
     </axis>
   </joint>
-<<<<<<< local
-<<<<<<< local
-=======
->>>>>>> other
-
 
    <plugin name="battery_plugin" filename="libBatteryModelPlugin.so">
     <battery_file>/tmp/gate/battery.log</battery_file>
 
-<<<<<<< local
-=======
-    <topicName> basic_robot/battery </topicName>
-    <commandTopic> basic_robot/move_cmd </commandTopic>
-    
->>>>>>> other
     <left_wheel> left_wheel_hinge </left_wheel>
     <right_wheel> right_wheel_hinge </right_wheel>
     <torque> 10 </torque>
     <rated_capacity> 6.5 </rated_capacity>    
     <initial_charge> 100 </initial_charge>
     <nominal_voltage> 12 </nominal_voltage>    
-<<<<<<< local
 
     <commandTopic>vel_cmd</commandTopic>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
     <robotBaseFrame>chassis</robotBaseFrame>
     
-=======
->>>>>>> other
    </plugin>
 
-<<<<<<< local
 
-=======
->>>>>>> other
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
     <alwaysOn>true</alwaysOn>
     <updateRate>${update_rate}</updateRate>
@@ -152,20 +135,10 @@
     <commandTopic>cmd_vel</commandTopic>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
-<<<<<<< local
     <robotBaseFrame>chassis</robotBaseFrame>
     <robotNamespace>wmr</robotNamespace>
-=======
-    <robotBaseFrame>base_footprint</robotBaseFrame>
-    <robotNamespace>basic_robot</robotNamespace>
->>>>>>> other
   </plugin>
 
-<<<<<<< local
 
-=======
->>>>>>> other
-=======
->>>>>>> other
    </model>
 </sdf>

@@ -46,11 +46,7 @@ BatteryModelPlugin::BatteryModelPlugin()
   this->pmq = new PubMultiQueue();
   this->rosNode = NULL;
   this->lastUpdate=0;
-<<<<<<< local
 
-
-=======
->>>>>>> other
 }
 
 /////////////////////////////////////////////////
@@ -75,21 +71,11 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->model->GetWorld()->GetName());
 
-<<<<<<< local
   // ros stuff
   this->rosNode = new ros::NodeHandle("");
-=======
-  this->moveSub = this->node->Subscribe(std::string("~/") +
-      this->model->GetName() + "/move_command",
-      &BatteryModelPlugin::OnMoveCmdMsg, this);
->>>>>>> other
+  this->pmq->startServiceThread();
 
 
-<<<<<<< local
-  this->velSub = this->node->Subscribe("~/vel_cmd", &BatteryModelPlugin::OnVelMsg, this);
-
-=======
->>>>>>> other
   // check for left and right wheel
   if (!_sdf->HasElement("left_wheel"))
     gzerr << "BatteryModel plugin missing <left_wheel> element in SDF file\n";
@@ -192,7 +178,6 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->batteryFileStream << "# wallTime(sec),simTime(sec),"
     "wallTimeElapsed(sec),simTimeElapsed(sec)" << std::endl;
 
-<<<<<<< local
     //ros::SubscribeOptions so =
     //  ros::SubscribeOptions::create<geometry_msgs::Twist>("Test", 1,
     //      boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1)
@@ -202,8 +187,7 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
 
     cmd_vel_throttle_publisher_ = rosNode->advertise<geometry_msgs::Twist>("/wmr/cmd_vel", 1);
 
-=======
->>>>>>> other
+  
 
   this->deferredLoadThread =
     boost::thread(boost::bind(&BatteryModelPlugin::DeferredLoad, this));
@@ -215,8 +199,6 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
 }
 
 /////////////////////////////////////////////////
-<<<<<<< local
-
 void BatteryModelPlugin::cmdVelCallback(
       const geometry_msgs::Twist::ConstPtr& cmd_msg) 
 {
@@ -238,32 +220,16 @@ void BatteryModelPlugin::cmdVelCallback(
   }
 
 /////////////////////////////////////////////////
-=======
->>>>>>> other
 void BatteryModelPlugin::Init()
 {
   gzwarn << "In Init()\n";
 
-  // compute wheelbase from model
-  this->wheelSeparation = this->leftWheel->GetAnchor(0).Distance(
-      this->rightWheel->GetAnchor(0));
-
-  // compute wheel radius from left wheel
-  physics::EntityPtr parent = boost::dynamic_pointer_cast<physics::Entity>(
-      this->leftWheel->GetChild());
-  math::Box bb = parent->GetBoundingBox();
-  // This assumes that the largest dimension of the wheel is the diameter
-  this->wheelRadius = bb.GetSize().GetMax() * 0.5;
-
   // compute discharge current for NiMH type
   this->nominalDischargeCurrent = 0.2 * this->ratedCapacity;
 
-<<<<<<< local
-  // compute % discharge
-  
 
-=======
->>>>>>> other
+  // compute % discharge
+
   // multipliers
   // motor load < specs (slower discharge)
 
@@ -290,25 +256,12 @@ void BatteryModelPlugin::DeferredLoad()
           << "  gazebo -s libgazebo_ros_api_plugin.so\n";
     return;
   }
-
-<<<<<<< local
-=======
-
-  // ros stuff
-  this->rosNode = new ros::NodeHandle("");
-
->>>>>>> other
   // publish multi queue
-  this->pmq->startServiceThread();
 
   this->pubBatteryMsgQueue = this->pmq->addPub<battery_plugin::Battery>();
   this->pubBatteryMsg = this->rosNode->advertise<battery_plugin::Battery>(
     "battery_msg", 1, true);
 
-<<<<<<< local
-
-=======
->>>>>>> other
 }
 
 /////////////////////////////////////////////////
@@ -356,22 +309,6 @@ void BatteryModelPlugin::WriteBatteryState(const common::Time &_simTime,
 
 }
 
-/////////////////////////////////////////////////
-<<<<<<< local
-void BatteryModelPlugin::OnVelMsg(ConstPosePtr &_msg)
-=======
-void BatteryModelPlugin::OnMoveCmdMsg(
-ConstPosePtr &_msg)
->>>>>>> other
-{
-<<<<<<< local
-  gzwarn << "Command Message Received" << std::endl;
-
-  std::cout << _msg->DebugString();
-=======
-    gzwarn << "Command Message Received" << std::endl;
->>>>>>> other
-}
 
 /////////////////////////////////////////////////
 void BatteryModelPlugin::OnUpdate()
@@ -387,12 +324,16 @@ void BatteryModelPlugin::OnUpdate()
     // temporary, assumed 100% charge; 0.278% per 10 seconds
     this->battCharge = this->battCharge - 0.278;
     
-    gzwarn << "Battery: " << this->battCharge  << std::endl;    
-    gzwarn << "SimTime: " << simTime.Double()  << std::endl;   
+    gzmsg << "Battery: " << this->battCharge  << std::endl;    
+    gzmsg << "SimTime: " << simTime.Double()  << std::endl;   
  
+    gzwarn << this->initCharge << std::endl;
 
     this->WriteBatteryState(simTime, wallTime, forceLogBattery);
     lastUpdate = simTime.Double();
   }
+
+ros::NodeHandle nh("gazebo");
+nh.getParam("battery/initial_charge", this->initCharge);
 
 }
