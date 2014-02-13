@@ -22,6 +22,7 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/date_time.hpp>
 
 #include "BatteryModelPlugin.hh"
 
@@ -67,6 +68,8 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->prevBatteryTime = common::Time(0,0);
   this->elapsedTimeSim = common::Time(0,0);
   this->prevUpdateTime = common::Time(0,0);
+  
+  this->dischargeRate = 0.0000000;
 
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->model->GetWorld()->GetName());
@@ -75,13 +78,15 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->rosNode = new ros::NodeHandle("");
   this->pmq->startServiceThread();
 
+  ros::NodeHandle nhgz("gazebo");
+
 
   // check for left and right wheel
   if (!_sdf->HasElement("left_wheel"))
-    gzerr << "BatteryModel plugin missing <left_wheel> element in SDF file\n";
+    gzerr << "BatteryModel plugin missing <left_wheel> element in SDF file" << std::endl;;
 
   if (!_sdf->HasElement("right_wheel"))
-    gzerr << "BatteryModel plugin missing <right_wheel> element in SDF file\n";
+    gzerr << "BatteryModel plugin missing <right_wheel> element in SDF file" << std::endl;
 
   // get left and right wheels
   this->leftWheel = _model->GetJoint(
@@ -89,38 +94,39 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->rightWheel = _model->GetJoint(
       _sdf->GetElement("right_wheel")->Get<std::string>());
 
-  // set torque value
-  if (_sdf->HasElement("torque"))
-    this->torque = _sdf->GetElement("torque")->Get<double>();
-
-  else
-  {
-    gzwarn << "No torque value set. (default) Torque = 5.0.\n";
-    this->torque = 5.0;
-  }
-
   // check and set battery parameters
-  if (!_sdf->HasElement("initial_charge"))
-    gzerr << "BatteryModel plugin missing <initial_charge> element in SDF file\n";
-  else
-  {  
-    this->initCharge = _sdf->GetElement("initial_charge")->Get<double>();
+  if (nhgz.getParam("battery/initial_charge", this->initCharge))
     this->battCharge = this->initCharge;
-  }
-
-  if (!_sdf->HasElement("rated_capacity"))
-    gzerr << "BatteryModel plugin missing <rated_capacity> element in SDF file\n";
   else
-  {  
-    this->ratedCapacity = _sdf->GetElement("rated_capacity")->Get<double>();
+    gzerr << "<gazebo/battery/initial_charge> parameter not set" << std::endl;
+
+  if (nhgz.getParam("battery/rated_capacity", this->ratedCapacity))
     this->battCapacity = this->ratedCapacity;
-}
-
-  if (!_sdf->HasElement("nominal_voltage"))
-    gzerr << "BatteryModel plugin missing <nominal_voltage> element in SDF file\n";
   else
-    this->nominalVoltage = _sdf->GetElement("nominal_voltage")->Get<double>();
+    gzerr << "<gazebo/rated_capacity parameter not set" << std::endl;
+ 
+  if (nhgz.getParam("battery/nominal_voltage", this->nominalVoltage))
+  {
+  }
+  else
+    gzerr << "<gazebo/battery/nominal_voltage> parameter not set" << std::endl;
 
+  // check and set motor parameters
+  if (nhgz.getParam("motor/rated_voltage", this->ratedVoltage))
+    this->battCharge = this->initCharge;
+  else
+    gzerr << "<gazebo/motor/rated_voltage> parameter not set" << std::endl;
+
+  if (nhgz.getParam("motor/torque_constant", this->torqueConstant))
+    this->battCapacity = this->ratedCapacity;
+  else
+    gzerr << "<gazebo/motor/torque_constant parameter not set" << std::endl;
+ 
+  if (nhgz.getParam("motor/max_rpm", this->maxRPM))
+  {
+  }
+  else
+    gzerr << "<gazebo/motor/max_rpm> parameter not set" << std::endl;
 
   // check wheels
   if (!this->leftWheel)
@@ -183,12 +189,11 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
     //      boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1)
        //   ros::VoidPtr(), &queue_);
 
-    cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("Test", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
+  cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("Test", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
 
-    cmd_vel_throttle_publisher_ = rosNode->advertise<geometry_msgs::Twist>("/wmr/cmd_vel", 1);
+  cmd_vel_throttle_publisher_ = this->rosNode->advertise<geometry_msgs::Twist>("/wmr/cmd_vel", 1);
 
-  
-
+ 
   this->deferredLoadThread =
     boost::thread(boost::bind(&BatteryModelPlugin::DeferredLoad, this));
 
@@ -203,20 +208,21 @@ void BatteryModelPlugin::cmdVelCallback(
       const geometry_msgs::Twist::ConstPtr& cmd_msg) 
 {
 
-    gzwarn << "Publish throttle to diff drive here" << std::endl;
+    gzwarn << "Received Velocity Command" << std::endl;
 
     //add twist publisher
     geometry_msgs::Twist cmd = *cmd_msg;
-    
+    gzwarn << cmd.linear.x << std::endl;
 
     // build message
 
     // pub message
-    cmd_vel_throttle_publisher_.publish(cmd);
+    if (this->battCharge < 0.0)
+        gzerr << "Insufficient battery charge. Please restart the simulation." << std::endl;
+    
+    else
+        cmd_vel_throttle_publisher_.publish(cmd);
 
-    //boost::mutex::scoped_lock scoped_lock(lock);
-    //x_ = cmd_msg->linear.x;
-    //rot_ = cmd_msg->angular.z;
   }
 
 /////////////////////////////////////////////////
@@ -230,20 +236,30 @@ void BatteryModelPlugin::Init()
 
   // compute % discharge
 
-  // multipliers
-  // motor load < specs (slower discharge)
-
-  // motor load == specs (normal discharge)
-
-  // motor load > specs (faster discharge)
-
+  // TODO: multipliers. asdaskdjasfj;kfl
+  // motor load < batt specs (slower discharge)
+  gzmsg << "asdasdasdasd" << this->ratedVoltage << std::endl << this->nominalVoltage << std::endl;
   
+  // motor load == batt specs (normal discharge)
+  if ((floor(this->ratedVoltage - this->nominalVoltage)) == 0)
+  {
+    this->dischargeRate = 10 * (100/3600);  
+    gzwarn << "same: " << this->dischargeRate << std::endl;
+  }
+  else
+  {
+    this->dischargeRate = 10 * (this->ratedVoltage/this->nominalVoltage) * (100/3600);
+    gzwarn << "else: " << this->dischargeRate << std::endl;
+  }
 }
 
 /////////////////////////////////////////////////
 void BatteryModelPlugin::DeferredLoad()
 {
 
+  gzwarn << "In DeferredLoad()" << std::endl;
+
+  boost::posix_time::seconds delayTime(5);
   //std::map<std::string, std::string> m;
   //ros::init(m ,"actuation" );
     //ros::NodeHandle nh;
@@ -252,8 +268,8 @@ void BatteryModelPlugin::DeferredLoad()
   {
     sleep(50);
     gzerr << "Not loading VRC scoring plugin because ROS hasn't been "
-          << "properly initialized.  Try starting gazebo with ros plugin:\n"
-          << "  gazebo -s libgazebo_ros_api_plugin.so\n";
+          << "properly initialized.  Try starting gazebo with ros plugin:" << std::endl
+          << "  gazebo -s libgazebo_ros_api_plugin.so" << std::endl;
     return;
   }
   // publish multi queue
@@ -262,6 +278,23 @@ void BatteryModelPlugin::DeferredLoad()
   this->pubBatteryMsg = this->rosNode->advertise<battery_plugin::Battery>(
     "battery_msg", 1, true);
 
+  gzmsg << "Waiting for battery and motor parameters" << std::endl;
+  
+  // TODO: Poll for Parameters here
+  
+  boost::this_thread::sleep(delayTime);  
+  this->paramDelay = 0;
+  gzmsg << "Parameters Loaded" << std::endl;
+  gzmsg << "Battery Specifications:" << std::endl
+        << "      Initial Charge: " << this->initCharge << std::endl
+        << "      Rated Capacity: " << this->ratedCapacity << std::endl
+        << "      Nominal Voltage " << this->nominalVoltage << std::endl;
+
+  gzmsg << std::endl;
+  gzmsg << "Motor Specifications:" << std::endl
+        << "      Rated Voltage: " << this->ratedVoltage << std::endl
+        << "      Torque Constant: " << this->torqueConstant << std::endl
+        << "      Maximum RPM: " << this->maxRPM << std::endl;
 }
 
 /////////////////////////////////////////////////
@@ -322,18 +355,13 @@ void BatteryModelPlugin::OnUpdate()
   if (!fmod(simTime.Double(),10))
   {
     // temporary, assumed 100% charge; 0.278% per 10 seconds
-    this->battCharge = this->battCharge - 0.278;
+    this->battCharge = this->battCharge - this->dischargeRate;
     
     gzmsg << "Battery: " << this->battCharge  << std::endl;    
     gzmsg << "SimTime: " << simTime.Double()  << std::endl;   
- 
-    gzwarn << this->initCharge << std::endl;
 
     this->WriteBatteryState(simTime, wallTime, forceLogBattery);
     lastUpdate = simTime.Double();
   }
-
-ros::NodeHandle nh;
-nh.getParam("/gazebo/battery/initial_charge", this->initCharge);
 
 }

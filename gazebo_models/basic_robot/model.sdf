@@ -111,22 +111,22 @@
 
     <left_wheel> left_wheel_hinge </left_wheel>
     <right_wheel> right_wheel_hinge </right_wheel>
-    <torque> 10 </torque>
+
     <rated_capacity> 6.5 </rated_capacity>    
     <initial_charge> 100 </initial_charge>
     <nominal_voltage> 12 </nominal_voltage>    
     
    </plugin>
 
-
+  <!-- turtlebot platform specs -->
   <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
     <alwaysOn>true</alwaysOn>
     <updateRate>${update_rate}</updateRate>
     <leftJoint>left_wheel_hinge</leftJoint>
     <rightJoint>right_wheel_hinge</rightJoint>
-    <wheelSeparation>0.5380</wheelSeparation>
-    <wheelDiameter>0.2410</wheelDiameter>
-    <torque>20</torque>
+    <wheelSeparation>0.2</wheelSeparation>
+    <wheelDiameter>0.076</wheelDiameter>
+    <torque>5.0</torque>
     <commandTopic>cmd_vel</commandTopic>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
