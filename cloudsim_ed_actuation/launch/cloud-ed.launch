@@ -25,7 +25,7 @@
   <!-- initial motor parameters -->
 
     <!-- rated motor voltage = Volts -->
-    <param name="/motor/rated_voltage" type="double" value="12" />
+    <param name="/motor/rated_voltage" type="double" value="24" />
     <!-- Kt = torque constant value = Nm/A -->
     <param name="/motor/torque_constant" type="double" value="0.21" />
     <!-- max revolutions per minute -->

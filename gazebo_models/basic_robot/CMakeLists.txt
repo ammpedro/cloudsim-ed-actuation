@@ -4,9 +4,9 @@ project(basic_robot)
 
 catkin_package()
 
-#install(DIRECTORY meshes
-#        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/basic_robot
-#)
+install(DIRECTORY meshes
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/basic_robot
+)
 #install(DIRECTORY materials
 #        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/basic_robot
 #)

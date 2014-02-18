@@ -32,6 +32,9 @@
 #include "battery_plugin/Battery.h"
 
 #include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Vector3.h>
+
+#include <rendering/Visual.hh>
 
 namespace gazebo
 {
@@ -61,6 +64,8 @@ namespace gazebo
 
     private: bool paramDelay;
 
+    private: bool startDischarge;
+
     private: transport::NodePtr node;
     private: transport::SubscriberPtr velSub;
     private: physics::JointPtr leftWheel, rightWheel;
@@ -78,6 +83,12 @@ namespace gazebo
     private: double torqueConstant;     // Nm/A
     private: double maxRPM;             // RPM
 
+    private: double linear_x;
+    private: double linear_y;
+    private: double linear_z;
+    
+    private: geometry_msgs::Vector3 msgLinear;
+    private: geometry_msgs::Vector3 msgAngular;
     
     private: ros::Subscriber cmd_vel_subscriber_;
 
@@ -120,6 +131,7 @@ namespace gazebo
 
     private: physics::ModelPtr model;
     private: physics::WorldPtr world;
+    private: sdf::ElementPtr modelsdf;
 
   };
 }

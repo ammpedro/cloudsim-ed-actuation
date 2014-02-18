@@ -65,11 +65,15 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
 
   this->model = _model;
   this->world = this->model->GetWorld();
+  this->modelsdf = _sdf;
+
   this->prevBatteryTime = common::Time(0,0);
   this->elapsedTimeSim = common::Time(0,0);
   this->prevUpdateTime = common::Time(0,0);
   
   this->dischargeRate = 0.0000000;
+
+  this->startDischarge = false;
 
   this->node = transport::NodePtr(new transport::Node());
   this->node->Init(this->model->GetWorld()->GetName());
@@ -189,9 +193,9 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
     //      boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1)
        //   ros::VoidPtr(), &queue_);
 
-  cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("Test", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
+  cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("/set_force", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
 
-  cmd_vel_throttle_publisher_ = this->rosNode->advertise<geometry_msgs::Twist>("/wmr/cmd_vel", 1);
+  cmd_vel_throttle_publisher_ = this->rosNode->advertise<geometry_msgs::Twist>("/dd/cmd_vel", 1);
 
  
   this->deferredLoadThread =
@@ -210,11 +214,16 @@ void BatteryModelPlugin::cmdVelCallback(
 
     gzwarn << "Received Velocity Command" << std::endl;
 
+    //start battery discharge
+    if (!startDischarge)
+        this->startDischarge = true;
+
     //add twist publisher
     geometry_msgs::Twist cmd = *cmd_msg;
-    gzwarn << cmd.linear.x << std::endl;
+    
+    this->msgLinear.x = cmd.linear.x;
 
-    // build message
+    // re-build message
 
     // pub message
     if (this->battCharge < 0.0)
@@ -233,23 +242,16 @@ void BatteryModelPlugin::Init()
   // compute discharge current for NiMH type
   this->nominalDischargeCurrent = 0.2 * this->ratedCapacity;
 
-
-  // compute % discharge
-
-  // TODO: multipliers. asdaskdjasfj;kfl
-  // motor load < batt specs (slower discharge)
-  gzmsg << "asdasdasdasd" << this->ratedVoltage << std::endl << this->nominalVoltage << std::endl;
+  // discharge multipliers  
   
   // motor load == batt specs (normal discharge)
   if ((floor(this->ratedVoltage - this->nominalVoltage)) == 0)
   {
-    this->dischargeRate = 10 * (100/3600);  
-    gzwarn << "same: " << this->dischargeRate << std::endl;
+    this->dischargeRate = 10.0 * (100.0/3600.0);  
   }
   else
   {
-    this->dischargeRate = 10 * (this->ratedVoltage/this->nominalVoltage) * (100/3600);
-    gzwarn << "else: " << this->dischargeRate << std::endl;
+    this->dischargeRate = 10.0 * (this->ratedVoltage/this->nominalVoltage) * (100.0/3600.0);
   }
 }
 
@@ -355,7 +357,8 @@ void BatteryModelPlugin::OnUpdate()
   if (!fmod(simTime.Double(),10))
   {
     // temporary, assumed 100% charge; 0.278% per 10 seconds
-    this->battCharge = this->battCharge - this->dischargeRate;
+    if (startDischarge)
+        this->battCharge = this->battCharge - this->dischargeRate;
     
     gzmsg << "Battery: " << this->battCharge  << std::endl;    
     gzmsg << "SimTime: " << simTime.Double()  << std::endl;   

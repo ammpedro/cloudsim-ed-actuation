@@ -12,12 +12,25 @@
         </geometry>
       </collision>
 
-      <visual name='visual'>
+      <visual name='chassis_visual'>
         <geometry>
-          <box>
+       <!--   <box>
             <size>.4 .2 .1</size>
-          </box>
+          </box> -->
+    <mesh>
+      <uri>model://basic_robot/meshes/chassis.dae</uri>
+      <scale>0.8 0.8 0.8</scale>
+    </mesh>
+
         </geometry>
+        
+        <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Black</name>
+            </script>
+          </material>
+
       </visual>
 
       <collision name='caster_collision'>
@@ -47,8 +60,15 @@
           <radius>.05</radius>
         </sphere>
       </geometry>
+        <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
     </visual>
-  </link>     
+  </link>  
+   
   <link name="left_wheel">
     <pose>0.1 0.13 0.1 0 1.5707 1.5707</pose>
     <collision name="collision">
@@ -59,12 +79,16 @@
         </cylinder>
       </geometry>
     </collision>
-    <visual name="visual">
+    <visual name="lw_visual">
       <geometry>
-        <cylinder>
+       <!-- <cylinder>
           <radius>.1</radius>
           <length>.05</length>
-        </cylinder>
+        </cylinder> -->
+          <mesh>
+            <uri>model://basic_robot/meshes/wheel.dae</uri>
+            <scale> 0.8 0.8 0.8 </scale>
+          </mesh>
       </geometry>
     </visual>
   </link>
@@ -79,12 +103,16 @@
         </cylinder>
       </geometry>
     </collision>
-    <visual name="visual">
+    <visual name="rw_visual">
       <geometry>
-        <cylinder>
+       <!-- <cylinder>
           <radius>.1</radius>
           <length>.05</length>
-        </cylinder>
+        </cylinder> -->
+          <mesh>
+            <uri>model://basic_robot/meshes/wheel.dae</uri>
+            <scale> 0.8 0.8 0.8 </scale>
+          </mesh>
       </geometry>
     </visual>
   </link>
@@ -119,7 +147,8 @@
    </plugin>
 
   <!-- turtlebot platform specs -->
-  <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+  <!-- <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so"> -->
+   <plugin name="differential_drive_controller" filename="libGazeboRosDiffDriveTorqueCtrl.so">
     <alwaysOn>true</alwaysOn>
     <updateRate>${update_rate}</updateRate>
     <leftJoint>left_wheel_hinge</leftJoint>
@@ -131,7 +160,7 @@
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
     <robotBaseFrame>chassis</robotBaseFrame>
-    <robotNamespace>wmr</robotNamespace>
+    <robotNamespace>dd</robotNamespace>
   </plugin>
 
 
