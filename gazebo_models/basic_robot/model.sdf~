@@ -27,10 +27,10 @@
         <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Black</name>
+              <name>Gazebo/Green</name>
             </script>
           </material>
-
+        <plugin name="battery_indicator_plugin" filename="libBatteryIndicatorPlugin.so" />
       </visual>
 
       <collision name='caster_collision'>
@@ -163,6 +163,7 @@
     <robotNamespace>dd</robotNamespace>
   </plugin>
 
+ 
 
    </model>
 </sdf>
