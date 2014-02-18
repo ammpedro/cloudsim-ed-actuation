@@ -1,0 +1,96 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+          <uri>model://map1</uri>
+      <name>map_1</name>
+      <pose>2.83802 3.77306 0 0 -0 0</pose>
+    </include> 
+
+
+    <include>
+      <uri>model://basic_robot</uri>
+      <name>basic_robot</name>
+      <pose>0 0 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://asphalt_plane</uri>
+      <name>asphalt</name>
+      <pose>0 0 0 0 -0 0</pose>
+    </include> 
+
+    <include>
+          <uri>model://construction_cone</uri>
+      <name>start_cone</name>
+      <pose>-6.00456 5.50462 0.049999 -2e-06 -2e-06 1.61559e-27</pose>
+    </include> 
+
+    <include>
+          <uri>model://construction_cone</uri>
+      <name>end_cone</name>
+      <pose>4.9528 -5.46202 0.049999 -2e-06 2e-06 -1.61559e-27</pose>
+    </include> 
+    
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_0</name>
+      <pose>-3.84072 5.02567 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_1</name>
+      <pose>-2.93822 2.06311 0 0 0 -1.5708</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_2</name>
+      <pose>-2.88764 -2.12599 0 0 0 -1.5708</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_3</name>
+      <pose>-1.96504 -5.32161 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_4</name>
+      <pose>0.222965 -5.33356 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_5</name>
+      <pose>-0.052516 -0.211698 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_6</name>
+      <pose>0.043676 4.94979 0 0 -0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_7</name>
+      <pose>3.19907 -5.02654 0 0 -0 0</pose>
+    </include>
+
+
+
+    <plugin filename="libGateScoringPlugin.so" name="gate_scoring">
+      <score_file>/tmp/gate/score.log</score_file>
+    </plugin>
+    
+  </world>
+</sdf>
