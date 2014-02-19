@@ -47,7 +47,7 @@ void BatteryIndicatorPlugin::Load(rendering::VisualPtr _parent, sdf::ElementPtr 
   std::map<std::string, std::string> m;
   ros::init(m ,"batt_indicator" );
 
-    this->color_indicator.Set(0.0, 0.0, 0.0, 1.0);
+    this->color_indicator.Set(0.0, 0.0, 0.0);
 
   this->deferredLoadThread =
     boost::thread(boost::bind(&BatteryIndicatorPlugin::DeferredLoad, this));
@@ -84,19 +84,16 @@ void BatteryIndicatorPlugin::chargeCallback(
     battery_plugin::Battery batt_msg = *_msg;
     double current_charge = batt_msg.current_batt_charge;
 
-    if (fmod(current_charge, 10) >= 0.0 && fmod(current_charge, 10) <= 0.5)
-    {
-        if (current_charge >= 80.0)
-            this->color_indicator.Set(0.0, 1.0, 0.0, 1.0);
-        else if (current_charge < 80.0 && current_charge > 60.0)
-            this->color_indicator.Set(0.5, 1.0, 0.25, 1.0);
-        else if (current_charge <= 60.0 && current_charge > 40.0)
-            this->color_indicator.Set(1.0, 0.5, 0.0, 1.0);
-        else if (current_charge <= 40.0 && current_charge > 20.0)
-            this->color_indicator.Set(1.0, 0.25, 0.0, 1.0);
-        else
-            this->color_indicator.Set(1.0, 0.0, 0.0, 1.0);
-    }
+    if (current_charge >= 80.0)
+        this->color_indicator.Set(0.0, 1.0, 0.0);
+    else if (current_charge < 80.0 && current_charge > 60.0)
+        this->color_indicator.Set(0.5, 0.9, 0.35);
+    else if (current_charge <= 60.0 && current_charge > 40.0)
+        this->color_indicator.Set(1.0, 0.5, 0.0);
+    else if (current_charge <= 40.0 && current_charge > 20.0)
+        this->color_indicator.Set(1.0, 0.25, 0.0);
+    else
+        this->color_indicator.Set(1.0, 0.0, 0.0);
 }
 
 /////////////////////////////////////////////////
