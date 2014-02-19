@@ -23,10 +23,10 @@
       </collision>
 
       <collision name="top_collision">
-        <pose>0 0 1.7 0 0 0</pose>
+        <pose>0 0 1.5 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.2 2.6 0.2</size>
+            <size>0.2 1.5 0.2</size>
           </box>
         </geometry>
       </collision>
@@ -36,7 +36,7 @@
         <geometry>
           <mesh>
             <uri>model://gate/meshes/gate.dae</uri>
-            <scale> 0.8 0.5 0.8 </scale>
+            <scale> 0.8 0.3 0.8 </scale>
           </mesh>
         </geometry>
         <material>

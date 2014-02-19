@@ -23,6 +23,8 @@
 #include <rendering/Visual.hh>
 #include <common/common.hh>
 
+#include "battery_plugin/BatteryModelPlugin.hh"
+
 namespace gazebo
 {
 class BatteryIndicatorPlugin : public VisualPlugin
@@ -31,12 +33,23 @@ class BatteryIndicatorPlugin : public VisualPlugin
     public: virtual  ~BatteryIndicatorPlugin();
 
     public: void Load(rendering::VisualPtr _parent, sdf::ElementPtr /*_sdf*/);
+
+    private: void DeferredLoad();
+
+    public: void chargeCallback(const battery_plugin::Battery::ConstPtr& cmd_msg); 
     
     public: void OnUpdate();
+
+    private: common::Color color_indicator;
 
     private: rendering::VisualPtr modelviz;
     
     private: event::ConnectionPtr updateConnection;
+ 
+    private: ros::NodeHandle* rosNode;
+    private: ros::Subscriber batt_subscriber;
+
+    private: boost::thread deferredLoadThread;
 };
 }
 

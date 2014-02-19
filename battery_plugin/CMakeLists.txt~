@@ -54,7 +54,7 @@ link_directories(
 
 add_library(BatteryModelPlugin src/BatteryModelPlugin.cc)
 target_link_libraries(BatteryModelPlugin ${catkin_LIBRARIES})
-add_dependencies(BatteryModelPlugin battery_plugin_generate_messages_cpp, ${catkin_EXPORTED_TARGETS})
+add_dependencies(BatteryModelPlugin battery_plugin_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
 
 
 ### executables, utilities for debugging atlas simulation, should not depend on gazebo
@@ -69,6 +69,6 @@ install(TARGETS BatteryModelPlugin
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-  FILES_MATCHING PATTERN "*.h"
+  FILES_MATCHING PATTERN "*.h" "*.hh"
   PATTERN ".svn" EXCLUDE
 )

@@ -109,6 +109,7 @@ namespace gazebo {
 
       std::string robot_namespace_;
       std::string command_topic_;
+      std::string command_topic2_;
       std::string odometry_topic_;
       std::string odometry_frame_;
       std::string robot_base_frame_;

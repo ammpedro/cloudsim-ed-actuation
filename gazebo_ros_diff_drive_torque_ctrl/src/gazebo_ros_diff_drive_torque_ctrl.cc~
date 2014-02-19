@@ -41,7 +41,7 @@
 #include <algorithm>
 #include <assert.h>
 
-#include "include/gazebo_ros_diff_drive_torque_ctrl.hh"
+#include "gazebo_ros_diff_drive_torque_ctrl.hh"
 
 #include <gazebo/math/gzmath.hh>
 #include <sdf/sdf.hh>
@@ -226,6 +226,14 @@ namespace gazebo {
 
     cmd_vel_subscriber_ = rosnode_->subscribe(so);
 
+    // ROS: Subscribe to the force command topic (usually "cmd_force")
+    ros::SubscribeOptions so_force =
+      ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic2_, 1,
+          boost::bind(&GazeboRosDiffDriveTorqueCtrl::cmdForceCallback, this, _1),
+          ros::VoidPtr(), &queue_);
+
+    cmd_vel_subscriber_ = rosnode_->subscribe(so);
+
     odometry_publisher_ = rosnode_->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
 
     // start custom queue for diff drive
@@ -250,8 +258,8 @@ namespace gazebo {
 
       // Update robot in case new velocities have been requested
       getWheelVelocities();
-      joints[LEFT]->SetForce(0, wheel_speed_[LEFT] / wheel_diameter_);
-      joints[RIGHT]->SetForce(0, wheel_speed_[RIGHT] / wheel_diameter_);
+      joints[LEFT]->SetVelocity(0, wheel_speed_[LEFT] / wheel_diameter_);
+      joints[RIGHT]->SetVelocity(0, wheel_speed_[RIGHT] / wheel_diameter_);
 
       last_update_time_+= common::Time(update_period_);
 
@@ -283,6 +291,11 @@ namespace gazebo {
     boost::mutex::scoped_lock scoped_lock(lock);
     x_ = cmd_msg->linear.x;
     rot_ = cmd_msg->angular.z;
+  }
+
+  void GazeboRosDiffDriveTorqueCtrl::cmdForceCallback(
+      const geometry_msgs::Twist::ConstPtr& cmd_msg) {
+    // TODO
   }
 
   void GazeboRosDiffDriveTorqueCtrl::QueueThread() {

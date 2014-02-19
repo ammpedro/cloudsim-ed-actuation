@@ -42,7 +42,7 @@ GZ_REGISTER_MODEL_PLUGIN(BatteryModelPlugin)
 /////////////////////////////////////////////////
 BatteryModelPlugin::BatteryModelPlugin()
 {
-        gzwarn << "Created BatteryModelPlugin\n";
+  gzwarn << "Created BatteryModelPlugin\n";
 
   this->pmq = new PubMultiQueue();
   this->rosNode = NULL;
@@ -70,17 +70,6 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
   this->elapsedTimeSim = common::Time(0,0);
   this->prevUpdateTime = common::Time(0,0);
 
-/*
-  rendering::VisualPtr visVisual(new rendering::Visual(visualName.str(),
-      linkVisual));
-
-  modelsdf =  this->_sdf->root
-      ->GetElement("my_robot")->GetElement("chassis")->GetElement("chassis_visual");
-  visualElem->GetElement("material")->GetElement("script")
-      ->GetElement("name")->Set("Gazebo/OrangeTransparent");
-
-  visVisual->Load(visualElem);
-*/  
   this->dischargeRate = 0.0000000;
 
   this->startDischarge = false;
@@ -252,19 +241,9 @@ void BatteryModelPlugin::Init()
   // compute discharge current for NiMH type
   this->nominalDischargeCurrent = 0.2 * this->ratedCapacity;
 
-  // discharge multipliers  
-  
-  // motor load == batt specs (normal discharge)
-  if ((floor(this->ratedVoltage - this->nominalVoltage)) == 0)
-  {
-    this->dischargeRate = 10.0 * (100.0/3600.0);  
-  }
-  else
-  {
-    this->dischargeRate = 10.0 * (this->ratedVoltage/this->nominalVoltage) * (100.0/3600.0);
-  }
+  // voltage based discharge
+  this->dischargeRate = 10.0 * (this->ratedVoltage/this->nominalVoltage) * (100.0/3600.0);
 }
-
 /////////////////////////////////////////////////
 void BatteryModelPlugin::DeferredLoad()
 {
@@ -288,7 +267,7 @@ void BatteryModelPlugin::DeferredLoad()
 
   this->pubBatteryMsgQueue = this->pmq->addPub<battery_plugin::Battery>();
   this->pubBatteryMsg = this->rosNode->advertise<battery_plugin::Battery>(
-    "battery_msg", 1, true);
+    "battery_msg", 1);
 
   gzmsg << "Waiting for battery and motor parameters" << std::endl;
   
@@ -349,7 +328,6 @@ void BatteryModelPlugin::WriteBatteryState(const common::Time &_simTime,
   rosBatteryMsg.current_batt_charge = this->battCharge;
 
   this->pubBatteryMsgQueue->push(rosBatteryMsg, this->pubBatteryMsg);
-
   this->prevBatteryTime = _simTime;
 
 }
@@ -370,8 +348,8 @@ void BatteryModelPlugin::OnUpdate()
     if (startDischarge)
         this->battCharge = this->battCharge - this->dischargeRate;
     
-    gzmsg << "Battery: " << this->battCharge  << std::endl;    
-    gzmsg << "SimTime: " << simTime.Double()  << std::endl;   
+    //gzmsg << "Battery: " << this->battCharge  << std::endl;    
+    //gzmsg << "SimTime: " << simTime.Double()  << std::endl;   
 
     this->WriteBatteryState(simTime, wallTime, forceLogBattery);
     lastUpdate = simTime.Double();

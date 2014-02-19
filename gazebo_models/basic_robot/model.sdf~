@@ -12,6 +12,10 @@
         </geometry>
       </collision>
 
+      <inertial>
+        <mass> 2.0 </mass>
+      </inertial>
+
       <visual name='chassis_visual'>
         <geometry>
        <!--   <box>
@@ -19,18 +23,10 @@
           </box> -->
     <mesh>
       <uri>model://basic_robot/meshes/chassis.dae</uri>
-      <scale>0.8 0.8 0.8</scale>
+      <scale>1 0.8 0.6</scale>
     </mesh>
 
         </geometry>
-        
-        <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Green</name>
-            </script>
-          </material>
-        <plugin name="battery_indicator_plugin" filename="libBatteryIndicatorPlugin.so" />
       </visual>
 
       <collision name='caster_collision'>
@@ -63,9 +59,25 @@
         <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/Black</name>
             </script>
           </material>
+    </visual>
+
+    <visual name='indicator_visual'>
+      <pose>0.15 0 0.25 0 0 0</pose>
+      <geometry>
+        <sphere>
+          <radius>.05</radius>
+        </sphere>
+      </geometry>
+        <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/GreenTransparent</name>
+            </script>
+          </material>
+        <plugin name="battery_indicator_plugin" filename="libBatteryIndicatorPlugin.so" />
     </visual>
   </link>  
    
@@ -87,7 +99,7 @@
         </cylinder> -->
           <mesh>
             <uri>model://basic_robot/meshes/wheel.dae</uri>
-            <scale> 0.8 0.8 0.8 </scale>
+            <scale> 1.0 1.0 1.0 </scale>
           </mesh>
       </geometry>
     </visual>
@@ -111,11 +123,12 @@
         </cylinder> -->
           <mesh>
             <uri>model://basic_robot/meshes/wheel.dae</uri>
-            <scale> 0.8 0.8 0.8 </scale>
+            <scale>1.0 1.0 1.0 </scale>
           </mesh>
       </geometry>
     </visual>
   </link>
+  
   <joint type="revolute" name="left_wheel_hinge">
     <pose>0 0 -0.03 0 0 0</pose>
     <child>left_wheel</child>
@@ -157,6 +170,7 @@
     <wheelDiameter>0.076</wheelDiameter>
     <torque>5.0</torque>
     <commandTopic>cmd_vel</commandTopic>
+    <commandTopic2>cmd_force</commandTopic>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
     <robotBaseFrame>chassis</robotBaseFrame>

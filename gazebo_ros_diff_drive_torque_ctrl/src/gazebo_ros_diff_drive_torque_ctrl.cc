@@ -134,6 +134,14 @@ namespace gazebo {
       this->command_topic_ = _sdf->GetElement("commandTopic")->Get<std::string>();
     }
 
+    this->command_topic2_ = "cmd_force";
+    if (!_sdf->HasElement("commandTopic")) {
+      ROS_WARN("GazeboRosDiffDriveTorqueCtrl Plugin (ns = %s) missing <commandTopic2>, defaults to \"%s\"",
+          this->robot_namespace_.c_str(), this->command_topic2_.c_str());
+    } else {
+      this->command_topic2_ = _sdf->GetElement("commandTopic2")->Get<std::string>();
+    }
+
     this->odometry_topic_ = "odom";
     if (!_sdf->HasElement("odometryTopic")) {
       ROS_WARN("GazeboRosDiffDriveTorqueCtrl Plugin (ns = %s) missing <odometryTopic>, defaults to \"%s\"",
@@ -226,6 +234,14 @@ namespace gazebo {
 
     cmd_vel_subscriber_ = rosnode_->subscribe(so);
 
+    // ROS: Subscribe to the force command topic (usually "cmd_force")
+    ros::SubscribeOptions so_force =
+      ros::SubscribeOptions::create<geometry_msgs::Twist>(command_topic2_, 1,
+          boost::bind(&GazeboRosDiffDriveTorqueCtrl::cmdForceCallback, this, _1),
+          ros::VoidPtr(), &queue_);
+
+    cmd_vel_subscriber_ = rosnode_->subscribe(so);
+
     odometry_publisher_ = rosnode_->advertise<nav_msgs::Odometry>(odometry_topic_, 1);
 
     // start custom queue for diff drive
@@ -250,8 +266,8 @@ namespace gazebo {
 
       // Update robot in case new velocities have been requested
       getWheelVelocities();
-      joints[LEFT]->SetForce(0, wheel_speed_[LEFT] / wheel_diameter_);
-      joints[RIGHT]->SetForce(0, wheel_speed_[RIGHT] / wheel_diameter_);
+      joints[LEFT]->SetVelocity(0, wheel_speed_[LEFT] / wheel_diameter_);
+      joints[RIGHT]->SetVelocity(0, wheel_speed_[RIGHT] / wheel_diameter_);
 
       last_update_time_+= common::Time(update_period_);
 
@@ -283,6 +299,11 @@ namespace gazebo {
     boost::mutex::scoped_lock scoped_lock(lock);
     x_ = cmd_msg->linear.x;
     rot_ = cmd_msg->angular.z;
+  }
+
+  void GazeboRosDiffDriveTorqueCtrl::cmdForceCallback(
+      const geometry_msgs::Twist::ConstPtr& cmd_msg) {
+    // TODO
   }
 
   void GazeboRosDiffDriveTorqueCtrl::QueueThread() {
