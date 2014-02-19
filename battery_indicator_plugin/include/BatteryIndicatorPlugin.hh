@@ -19,11 +19,11 @@
 #define _GAZEBO_BATTERY_INDICATOR_PLUGIN_HH_
 
 #include <boost/bind.hpp>
-#include <gazebo.hh>
-#include <rendering/Visual.hh>
-#include <common/common.hh>
+#include <gazebo/gazebo.hh>
+#include <gazebo/rendering/Visual.hh>
+#include <gazebo/common/common.hh>
 
-#include "battery_plugin/BatteryModelPlugin.hh"
+#include <battery_plugin/Battery.h>
 
 namespace gazebo
 {

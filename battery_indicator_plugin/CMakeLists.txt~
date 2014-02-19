@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(battery_plugin)
+project(battery_indicator_plugin)
 set(CMAKE_BUILD_TYPE "RelWithDebInfo")
 
 
@@ -7,26 +7,15 @@ find_package(catkin REQUIRED COMPONENTS
              roscpp
              std_msgs
              gazebo_plugins
-             message_generation
-             scoring_plugins
+             battery_plugin
 )
 
-add_message_files(
-  DIRECTORY msg
-  FILES
-  Battery.msg
-  )
-
-generate_messages(DEPENDENCIES
-  std_msgs
-  )
 
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES drcsim_gazebo_ros_plugins
   CATKIN_DEPENDS gazebo_plugins
   message_runtime
-  message_generation
 #  DEPENDS system_lib
 )
 
@@ -43,7 +32,10 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/include
   ${catkin_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
+  
 )
+
+
 
 link_directories(
   ${GAZEBO_LIBRARY_DIRS}
@@ -52,9 +44,11 @@ link_directories(
 ## Declare a cpp library
 
 
-add_library(BatteryModelPlugin src/BatteryModelPlugin.cc)
-target_link_libraries(BatteryModelPlugin ${catkin_LIBRARIES})
-add_dependencies(BatteryModelPlugin battery_plugin_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+add_library(BatteryIndicatorPlugin src/BatteryIndicatorPlugin.cc)
+
+add_dependencies(BatteryIndicatorPlugin battery_generate_messages_cpp ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(BatteryIndicatorPlugin ${catkin_LIBRARIES})
 
 
 ### executables, utilities for debugging atlas simulation, should not depend on gazebo
@@ -63,7 +57,7 @@ add_dependencies(BatteryModelPlugin battery_plugin_generate_messages_cpp ${catki
 #############
 ## Install ##
 #############
-install(TARGETS BatteryModelPlugin 
+install(TARGETS BatteryIndicatorPlugin 
   DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 )
 

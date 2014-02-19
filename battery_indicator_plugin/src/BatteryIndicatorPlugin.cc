@@ -15,12 +15,12 @@
  *
 */
 
+#include <ros/ros.h>
+#include <gazebo/common/common.hh>
+
 
 #include "BatteryIndicatorPlugin.hh"
-#include "battery_plugin/BatteryModelPlugin.hh"
-
-#include <common/common.hh>
-#include <ros/ros.h>
+// #include <battery_plugin/Battery.h>
 
 
 using namespace gazebo;

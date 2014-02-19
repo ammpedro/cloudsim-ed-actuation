@@ -7,7 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
              roscpp
              std_msgs
              gazebo_plugins
-
+             battery_plugin
 )
 
 
@@ -32,7 +32,10 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/include
   ${catkin_INCLUDE_DIRS}
   ${GAZEBO_INCLUDE_DIRS}
+  
 )
+
+
 
 link_directories(
   ${GAZEBO_LIBRARY_DIRS}
@@ -42,7 +45,10 @@ link_directories(
 
 
 add_library(BatteryIndicatorPlugin src/BatteryIndicatorPlugin.cc)
+
+
 target_link_libraries(BatteryIndicatorPlugin ${catkin_LIBRARIES})
+
 
 ### executables, utilities for debugging atlas simulation, should not depend on gazebo
 

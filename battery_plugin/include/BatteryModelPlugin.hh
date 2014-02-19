@@ -34,7 +34,7 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3.h>
 
-#include <rendering/Visual.hh>
+#include <gazebo/rendering/Visual.hh>
 
 namespace gazebo
 {

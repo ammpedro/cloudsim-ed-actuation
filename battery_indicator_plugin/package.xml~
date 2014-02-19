@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>battery_plugin</name>
+  <name>battery_indicator_plugin</name>
   <version>0.0.0</version>
-  <description>The battery_plugin package</description>
+  <description>The battery_indicator_plugin package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -55,8 +55,6 @@
    
    <build_depend>message_generation</build_depend>
    <run_depend>message_generation</run_depend>  
-   
-   <build_depend>scoring_plugins</build_depend>
    
   <!-- The export tag contains other, unspecified, tags -->
   <export>

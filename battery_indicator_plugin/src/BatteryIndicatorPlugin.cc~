@@ -19,7 +19,7 @@
 #include "BatteryIndicatorPlugin.hh"
 #include "battery_plugin/BatteryModelPlugin.hh"
 
-#include <common/common.hh>
+#include <gazebo/common/common.hh>
 #include <ros/ros.h>
 
 
