@@ -13,7 +13,7 @@
       </collision>
 
       <inertial>
-        <mass> 2.0 </mass>
+        <mass> 5.0 </mass>
       </inertial>
 
       <visual name='chassis_visual'>
@@ -91,6 +91,11 @@
         </cylinder>
       </geometry>
     </collision>
+
+      <inertial>
+        <mass> 1.5 </mass>
+      </inertial>
+
     <visual name="lw_visual">
       <geometry>
        <!-- <cylinder>
@@ -115,6 +120,11 @@
         </cylinder>
       </geometry>
     </collision>
+
+      <inertial>
+        <mass> 1.5 </mass>
+      </inertial>
+
     <visual name="rw_visual">
       <geometry>
        <!-- <cylinder>
