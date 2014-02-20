@@ -19,7 +19,7 @@ cd ..
 echo "Building catkin workspace"
 catkin_make install
 . devel/setup.bash
-. install/share/cloudsim_ed_actuation/setupx.bash
+. install/share/cloudsim_ed_actuation/setupx.sh
 
 echo "Setup Notebooks"
 cp src/cloudsim-ed-actuation/notebooks/. ~/cloudsim/notebook/ -R
