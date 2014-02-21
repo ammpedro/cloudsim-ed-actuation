@@ -13,7 +13,7 @@
       </collision>
 
       <inertial>
-        <mass> 2.0 </mass>
+        <mass> 5.0 </mass>
       </inertial>
 
       <visual name='chassis_visual'>
@@ -170,7 +170,7 @@
     <wheelDiameter>0.076</wheelDiameter>
     <torque>5.0</torque>
     <commandTopic>cmd_vel</commandTopic>
-    <commandTopic2>cmd_force</commandTopic>
+    <commandTopic2>cmd_force</commandTopic2>
     <odometryTopic>odom</odometryTopic>
     <odometryFrame>odom</odometryFrame>
     <robotBaseFrame>chassis</robotBaseFrame>
