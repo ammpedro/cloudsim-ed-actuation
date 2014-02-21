@@ -1,0 +1,14 @@
+<package>
+  <name>test_motor</name>
+  <version>2.2.2</version>
+  <description>
+     todo
+  </description>
+  <author>osrf</author>
+  <author email="todo@todo.com">osrf</author>
+  <maintainer email="todo@todo.com">osrf</maintainer>
+  <license>BSD</license>
+  <url type="website">http://gazebosim.org</url>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

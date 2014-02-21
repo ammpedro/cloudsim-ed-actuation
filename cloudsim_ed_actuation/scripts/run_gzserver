@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# First argument should be a fully-qualified path to a .world file
+gzserver $@
+
