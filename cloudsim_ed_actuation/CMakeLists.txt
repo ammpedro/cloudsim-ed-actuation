@@ -163,7 +163,7 @@ install(PROGRAMS
 ## Mark other files for installation (e.g. launch and bag files, etc.)
  install(FILES
    ../setup.bash
-#   # myfile2
+   ../setupx.bash
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
 

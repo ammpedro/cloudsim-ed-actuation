@@ -85,35 +85,22 @@ void BatteryIndicatorPlugin::chargeCallback(
     double current_charge = batt_msg.current_batt_charge;
 
     if (current_charge >= 80.0)
-        this->color_indicator.Set(0.0, 1.0, 0.0);
+        this->color_indicator.Set(0.0, 0.4, 0.0);                   //dark-green
     else if (current_charge < 80.0 && current_charge > 60.0)
-        this->color_indicator.Set(0.5, 0.9, 0.35);
+        this->color_indicator.Set(0.6, 0.8, 0.2);                  //yellow-green
     else if (current_charge <= 60.0 && current_charge > 40.0)
-        this->color_indicator.Set(1.0, 0.5, 0.0);
+        this->color_indicator.Set(1.0, 0.5, 0.0);                   //orange
     else if (current_charge <= 40.0 && current_charge > 20.0)
-        this->color_indicator.Set(1.0, 0.25, 0.0);
+        this->color_indicator.Set(1.0, 0.25, 0.0);                  //red-orange
     else
-        this->color_indicator.Set(1.0, 0.0, 0.0);
+        this->color_indicator.Set(1.0, 0.0, 0.0);                   //red
 }
 
 /////////////////////////////////////////////////
 void BatteryIndicatorPlugin::OnUpdate()
 {
-    static float r=0.0, increment=0.01;
-    if (r > 0.5) {
-        increment = -0.01;
-        r = 0.5;
-    }
-    if (r < 0.0) {
-        r = 0.0;
-        increment = 0.01;
-    }
-
-    //
-    common::Color c(r, r, r);
+   
     this->modelviz->SetAmbient(this->color_indicator);
     this->modelviz->SetDiffuse(this->color_indicator);
-    this->modelviz->SetEmissive(c);
-    //
-    r += increment;
+   
 }
