@@ -19,6 +19,7 @@
 #include <vector>
 #include <stdlib.h>
 #include <time.h>
+#include <sstream>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -176,13 +177,13 @@ void GateScoringPlugin::DeferredLoad()
   while (!this->turtleBot)
   {
     this->turtleBot = this->world->GetModel("basic_robot");
-    gzwarn << "Waiting for turtlebot" << std::endl;
+    gzwarn << "Waiting for basic_robot" << std::endl;
     sleep(1.0);
     //gzerr << "Failed to find turtlebot" << std::endl;
     
   }
   this->initialPose = this->turtleBot->GetWorldPose();
-  gzwarn << "Found turtlebot" << std::endl;
+  gzwarn << "Found basic_robot" << std::endl;
 }
 
 /////////////////////////////////////////////////
@@ -241,7 +242,7 @@ void GateScoringPlugin::StartClock(const common::Time &_simTime,
   this->startTimeSim = _simTime;
   this->startTimeWall = _wallTime;
   std::stringstream ss;
-  ss << "Starting clock. ";
+  ss << "; Starting clock ";
   gzlog << ss.str() << std::endl;
   _msg += ss.str();
 }
@@ -254,7 +255,7 @@ void GateScoringPlugin::StopClock(const common::Time &_simTime,
   this->stopTimeSim = _simTime;
   this->stopTimeWall = _wallTime;
   std::stringstream ss;
-  ss << "Stopping clock. ";
+  ss << "; Stopping clock";
   gzlog << ss.str() << std::endl;
   _msg += ss.str();
 }
@@ -366,7 +367,7 @@ bool GateScoringPlugin::CheckNextGate(std::string &_msg)
     {
       // Log it
       std::stringstream ss;
-      ss << "Successfully passed through gate " <<
+      ss << "; Successfully passed through gate " <<
         (this->nextGate->number+1) << ". ";
       gzlog << ss.str() << std::endl;
       _msg += ss.str();
@@ -407,6 +408,8 @@ void GateScoringPlugin::OnUpdate(const common::UpdateInfo &_info)
 
   common::Time simTime = _info.simTime;
   common::Time wallTime = common::Time::GetWallTime();
+
+  scoreMsg = static_cast<std::ostringstream*>( &(std::ostringstream() << this->completionScore) )->str();
 
   // Did we pass through a gate?
   bool firstGate = (this->nextGate == this->gates.begin());
@@ -463,7 +466,7 @@ void GateScoringPlugin::RecordEndScore()
   boost::filesystem::path destPath(this->scoreFilePath);
   destPath.remove_leaf() /= ss.str();
 
-  gzerr << destPath.string().c_str() << std::endl;
+  gzwarn << "Writing End Score:" << destPath.string().c_str() << std::endl;
 
   boost::filesystem::copy_file(this->scoreFilePath,
     destPath, boost::filesystem::copy_option::overwrite_if_exists);
