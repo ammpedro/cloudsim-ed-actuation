@@ -10,4 +10,4 @@ else
   echo "Warning: failed to find Gazebo's setup.sh.  You will need to source it manually."
 fi
 
-export GAZEBO_MODEL_PATH=`rospack find asphalt_plane`:`rospack find construction_cone`:`rospack find basic_robot`:`rospack find map1`:`rospack find gate`:`rospack find gate_number_1`:`rospack find gate_number_2`:`rospack find gate_number_3`:`rospack find gate_number_4`:`rospack find gate_number_5`:$GAZEBO_MODEL_PATH
+export GAZEBO_MODEL_PATH=`rospack find ramp_60`:`rospack find asphalt_plane`:`rospack find construction_cone`:`rospack find basic_robot`:`rospack find map1`:`rospack find gate`:`rospack find gate_number_1`:`rospack find gate_number_2`:`rospack find gate_number_3`:`rospack find gate_number_4`:`rospack find gate_number_5`:$GAZEBO_MODEL_PATH

@@ -12,6 +12,16 @@
       <name>map_1</name>
       <pose>2.83802 3.77306 0 0 -0 0</pose>
     </include> 
+    <include>
+          <uri>model://ramp_60</uri>
+      <name>ramp_1</name>
+      <pose>-3.012403 -3.857522 -0.45 0 -0 0</pose>
+    </include> 
+    <include>
+          <uri>model://ramp_60</uri>
+      <name>ramp_2</name>
+      <pose>-0.908872 -5.304405 -0.2 0 -0 -1.570796</pose>
+    </include> 
 
 
     <include>
@@ -53,7 +63,7 @@
     <include>
           <uri>model://gate</uri>
       <name>gate_2</name>
-      <pose>-2.88764 -2.12599 0 0 0 -1.5708</pose>
+      <pose>-2.849068 -2.796170 0 0 0 -1.5708</pose>
     </include>
 
     <include>
