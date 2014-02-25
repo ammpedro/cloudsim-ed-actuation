@@ -1,11 +1,14 @@
 Tested on:
+
 1. Ubuntu 12.04 x64 Virtual Machine via VMware Fusion 6.0.2
 2. ROS Hydro
 
 Notes (01/24/14):
+
 1. Restructured for cloudsim use. Run setup.sh in root directory instead.
 
 Notes (01/22/14):
+
 1. Clone package to catkin_ws/src/cloudsim_ed_actuation_gazebo
 2. Setup .bashrc
     - source /usr/share/gazebo-1.9/setup.sh

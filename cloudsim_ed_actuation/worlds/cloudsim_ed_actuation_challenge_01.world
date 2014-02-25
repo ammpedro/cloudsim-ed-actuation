@@ -13,14 +13,14 @@
       <pose>2.83802 3.77306 0 0 -0 0</pose>
     </include> 
     <include>
-          <uri>model://ramp_60</uri>
+          <uri>model://ramp_15</uri>
       <name>ramp_1</name>
-      <pose>-3.012403 -3.857522 -0.45 0 -0 0</pose>
+      <pose>-2.938300 -2.515268 0 0 -0 0</pose>
     </include> 
     <include>
-          <uri>model://ramp_60</uri>
+          <uri>model://ramp_10</uri>
       <name>ramp_2</name>
-      <pose>-0.908872 -5.304405 -0.2 0 -0 -1.570796</pose>
+      <pose>-1.537976 -5.261581 0 0 -0 -1.570801</pose>
     </include> 
 
 
