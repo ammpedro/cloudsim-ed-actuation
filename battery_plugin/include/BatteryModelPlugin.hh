@@ -58,7 +58,8 @@ namespace gazebo
                                     bool _force);
 
     private: void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
-    private: void PollForParameters();
+
+    private: void SetParameters();
 
     private: double lastUpdate;
 
@@ -79,7 +80,7 @@ namespace gazebo
     private: double nominalDischargeCurrent; // A
     private: double dischargeRate;       // %
 
-    private: double ratedVoltage;       // V
+    private: double ratedMotorVoltage;       // V
     private: double torqueConstant;     // Nm/A
     private: double maxRPM;             // RPM
 
