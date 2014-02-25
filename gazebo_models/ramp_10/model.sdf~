@@ -1,35 +1,35 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
-  <model name="ramp_60">
+  <model name="ramp_10">
     <static>true</static>
     <pose>0 0 0 0 0 0</pose>
     <link name="link">
       <collision name="up_collision">
-        <pose>0 0 -0.2 -1.0 0 0</pose>
+        <pose>0 0 0 0.261799388 0 0</pose>
         <geometry>
           <box>
-            <size>1 1 1</size>
+            <size>1 2 0.5</size>
           </box>
         </geometry>
       </collision>
 
         <visual name='up_visual'>
-         <pose>0 0 -0.2 -1.0 0 0 </pose>
+         <pose>0 0 0 0.261799388 0 0 </pose>
           <geometry>
             <box>
-              <size>1 1 1</size>
+              <size>1 2 0.5</size>
             </box>
           </geometry>
           <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/FlatBlack</name>
             </script>
           </material>
         </visual>
 
-      <collision name="down_collision">
-        <pose>0 2.3 -0.2 1.0 0 0</pose>
+      <collision name="mid_collision">
+        <pose>0 1.35 0 0 0 0</pose>
         <geometry>
           <box>
             <size>1 1 1</size>
@@ -37,41 +37,41 @@
         </geometry>
       </collision>
 
-        <visual name='down_visual'>
-         <pose>0 2.3 -0.2 1.0 0 0 </pose>
+        <visual name='mid_visual'>
+         <pose>0 1.35 0 0 0 0 </pose>
           <geometry>
             <box>
               <size>1 1 1</size>
             </box>
           </geometry>
-        <material>
+          <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/FlatBlack</name>
             </script>
           </material>
         </visual>
 
-      <collision name="mid_collision">
-        <pose>0 1.15 0 0 0 0</pose>
+      <collision name="down_collision">
+        <pose>0 2.75 -0 -0.261799388 0 0</pose>
         <geometry>
           <box>
-            <size>1 2 1</size>
+            <size>1 2 0.5</size>
           </box>
         </geometry>
       </collision>
 
-        <visual name='mid_visual'>
-         <pose>0 1.15 0 0 0 0 </pose>
+        <visual name='down_visual'>
+         <pose>0 2.75 0 -0.261799388 0 0 </pose>
           <geometry>
             <box>
-              <size>1 2 1</size>
+              <size>1 2 0.5</size>
             </box>
           </geometry>
-          <material>
+        <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/FlatBlack</name>
             </script>
           </material>
         </visual>

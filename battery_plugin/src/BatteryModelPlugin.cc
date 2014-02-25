@@ -232,6 +232,10 @@ void BatteryModelPlugin::cmdVelCallback(
         cmd_vel_throttle_publisher_.publish(cmd);
 
   }
+  else
+  {
+    
+  }
 
 /////////////////////////////////////////////////
 void BatteryModelPlugin::Init()
@@ -275,7 +279,7 @@ void BatteryModelPlugin::DeferredLoad()
   
   boost::this_thread::sleep(delayTime);  
   this->paramDelay = 0;
-  gzmsg << "Parameters Loaded" << std::endl;
+  gzmsg << "Default Parameters Loaded" << std::endl;
   gzmsg << "Battery Specifications:" << std::endl
         << "      Initial Charge: " << this->initCharge << std::endl
         << "      Rated Capacity: " << this->ratedCapacity << std::endl
@@ -353,6 +357,38 @@ void BatteryModelPlugin::OnUpdate()
 
     this->WriteBatteryState(simTime, wallTime, forceLogBattery);
     lastUpdate = simTime.Double();
+  }
+
+  if (!startDischarge)
+  {
+      // check and set battery parameters
+  if (nhgz.getParam("battery/rated_capacity", this->ratedCapacity))
+    this->battCapacity = this->ratedCapacity;
+  else
+    gzerr << "<gazebo/rated_capacity parameter not set" << std::endl;
+ 
+  if (nhgz.getParam("battery/nominal_voltage", this->nominalVoltage))
+  {
+  }
+  else
+    gzerr << "<gazebo/battery/nominal_voltage> parameter not set" << std::endl;
+
+  // check and set motor parameters
+  if (nhgz.getParam("motor/rated_voltage", this->ratedVoltage))
+    this->battCharge = this->initCharge;
+  else
+    gzerr << "<gazebo/motor/rated_voltage> parameter not set" << std::endl;
+
+  if (nhgz.getParam("motor/torque_constant", this->torqueConstant))
+    this->battCapacity = this->ratedCapacity;
+  else
+    gzerr << "<gazebo/motor/torque_constant parameter not set" << std::endl;
+ 
+  if (nhgz.getParam("motor/max_rpm", this->maxRPM))
+  {
+  }
+  else
+    gzerr << "<gazebo/motor/max_rpm> parameter not set" << std::endl;
   }
 
 }
