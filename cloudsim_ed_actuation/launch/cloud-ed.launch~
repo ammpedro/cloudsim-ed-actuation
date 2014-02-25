@@ -1,6 +1,6 @@
 <launch>
   <arg name="gzname" default="gzserver"/>
-  <arg name="gzworld" default="$(find cloudsim_ed_actuation)/worlds/cloudsim_ed_actuation_challenge_01.world"/>
+  <arg name="gzworld" default="$(find cloudsim_ed_actuation)/worlds/cloudsim_ed_actuation_task_01.world"/>
   <arg name="extra_gazebo_args" default="" />
 
   <param name="/use_sim_time" type="bool" value="true"/>
@@ -31,6 +31,9 @@
     <!-- max revolutions per minute -->
     <param name="/motor/max_rpm" type="double" value="9960" />
 
+  <!-- quick setup -->
+    <param name = "/motor/profile" type="string" value="default" />
+    <param name = "/battery/profile" type="string" value="default" />
 
   </node>
 

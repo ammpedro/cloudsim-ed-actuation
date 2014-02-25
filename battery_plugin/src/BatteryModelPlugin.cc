@@ -115,13 +115,15 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
     gzerr << "<gazebo/battery/nominal_voltage> parameter not set" << std::endl;
 
   // check and set motor parameters
-  if (nhgz.getParam("motor/rated_voltage", this->ratedVoltage))
-    this->battCharge = this->initCharge;
+  if (nhgz.getParam("motor/rated_voltage", this->ratedMotorVoltage))
+  {
+  }
   else
     gzerr << "<gazebo/motor/rated_voltage> parameter not set" << std::endl;
 
   if (nhgz.getParam("motor/torque_constant", this->torqueConstant))
-    this->battCapacity = this->ratedCapacity;
+  {
+  }
   else
     gzerr << "<gazebo/motor/torque_constant parameter not set" << std::endl;
  
@@ -215,8 +217,20 @@ void BatteryModelPlugin::cmdVelCallback(
 
     //start battery discharge
     if (!startDischarge)
-        this->startDischarge = true;
+    {   
+          gzmsg << "Starting with Robot Parameters:" << std::endl;
+          gzmsg << "Battery Specifications:" << std::endl
+                << "      Initial Charge: " << this->initCharge << std::endl
+                << "      Rated Capacity: " << this->ratedCapacity << std::endl
+                << "      Nominal Voltage " << this->nominalVoltage << std::endl;
 
+          gzmsg << std::endl;
+          gzmsg << "Motor Specifications:" << std::endl
+                << "      Rated Voltage: " << this->ratedMotorVoltage << std::endl
+                << "      Torque Constant: " << this->torqueConstant << std::endl
+                << "      Maximum RPM: " << this->maxRPM << std::endl; 
+        this->startDischarge = true;    
+    }
     //add twist publisher
     geometry_msgs::Twist cmd = *cmd_msg;
     
@@ -231,12 +245,7 @@ void BatteryModelPlugin::cmdVelCallback(
     else
         cmd_vel_throttle_publisher_.publish(cmd);
 
-  }
-  else
-  {
-    
-  }
-
+}
 /////////////////////////////////////////////////
 void BatteryModelPlugin::Init()
 {
@@ -246,7 +255,7 @@ void BatteryModelPlugin::Init()
   this->nominalDischargeCurrent = 0.2 * this->ratedCapacity;
 
   // voltage based discharge
-  this->dischargeRate = 10.0 * (this->ratedVoltage/this->nominalVoltage) * (100.0/3600.0);
+  this->dischargeRate = 10.0 * (this->ratedMotorVoltage/this->nominalVoltage) * (100.0/3600.0);
 }
 /////////////////////////////////////////////////
 void BatteryModelPlugin::DeferredLoad()
@@ -254,7 +263,6 @@ void BatteryModelPlugin::DeferredLoad()
 
   gzwarn << "In DeferredLoad()" << std::endl;
 
-  boost::posix_time::seconds delayTime(5);
   //std::map<std::string, std::string> m;
   //ros::init(m ,"actuation" );
     //ros::NodeHandle nh;
@@ -273,12 +281,6 @@ void BatteryModelPlugin::DeferredLoad()
   this->pubBatteryMsg = this->rosNode->advertise<battery_plugin::Battery>(
     "battery_msg", 1);
 
-  gzmsg << "Waiting for battery and motor parameters" << std::endl;
-  
-  // TODO: Poll for Parameters here
-  
-  boost::this_thread::sleep(delayTime);  
-  this->paramDelay = 0;
   gzmsg << "Default Parameters Loaded" << std::endl;
   gzmsg << "Battery Specifications:" << std::endl
         << "      Initial Charge: " << this->initCharge << std::endl
@@ -287,12 +289,72 @@ void BatteryModelPlugin::DeferredLoad()
 
   gzmsg << std::endl;
   gzmsg << "Motor Specifications:" << std::endl
-        << "      Rated Voltage: " << this->ratedVoltage << std::endl
+        << "      Rated Voltage: " << this->ratedMotorVoltage << std::endl
         << "      Torque Constant: " << this->torqueConstant << std::endl
         << "      Maximum RPM: " << this->maxRPM << std::endl;
 }
-
 /////////////////////////////////////////////////
+
+void BatteryModelPlugin::SetParameters()
+{
+    ros::NodeHandle nhgz("gazebo");
+
+  std::string battProfile, motorProfile;  
+
+  if (nhgz.getParam("battery/profile", battProfile))
+  {    
+    if (battProfile.compare("small") == 0)
+    {
+        this->ratedCapacity = 1.6;
+        this->nominalVoltage = 6.0;
+        battProfile = "setSmall";
+    }
+
+    else if (battProfile.compare("medium") == 0)
+    {
+        this->ratedCapacity = 3.0;
+        this->nominalVoltage = 12.0;
+        battProfile = "setMedium";
+    }
+
+    else if (battProfile.compare("large") == 0)
+    {
+        this->ratedCapacity = 5.0;
+        this->nominalVoltage = 24.0;
+        battProfile = "setLarge";
+    }
+  }
+
+  if (nhgz.getParam("motor/profile", motorProfile))
+  {    
+    if (motorProfile.compare("small") == 0)
+    {
+        this->ratedMotorVoltage = 0.0;
+        this->torqueConstant = 0.0;
+        this->maxRPM = 0.0;
+        motorProfile = "setSmall";
+    }
+
+    else if (motorProfile.compare("medium") == 0)
+    {
+        this->ratedMotorVoltage = 12.0;
+        this->torqueConstant = 0.21;
+        this->maxRPM = 9960;
+        motorProfile = "setMedium";
+    }
+
+    else if (motorProfile.compare("large") == 0)
+    {
+        this->ratedMotorVoltage = 0.0;
+        this->torqueConstant = 0.0;
+        this->maxRPM = 0.0;
+        motorProfile = "setLarge";
+    }
+  }
+
+}
+/////////////////////////////////////////////////
+
 void BatteryModelPlugin::WriteBatteryState(const common::Time &_simTime,
   const common::Time &_wallTime, bool _force)
 {
@@ -361,34 +423,8 @@ void BatteryModelPlugin::OnUpdate()
 
   if (!startDischarge)
   {
-      // check and set battery parameters
-  if (nhgz.getParam("battery/rated_capacity", this->ratedCapacity))
-    this->battCapacity = this->ratedCapacity;
-  else
-    gzerr << "<gazebo/rated_capacity parameter not set" << std::endl;
- 
-  if (nhgz.getParam("battery/nominal_voltage", this->nominalVoltage))
-  {
+     this->SetParameters();
   }
-  else
-    gzerr << "<gazebo/battery/nominal_voltage> parameter not set" << std::endl;
 
-  // check and set motor parameters
-  if (nhgz.getParam("motor/rated_voltage", this->ratedVoltage))
-    this->battCharge = this->initCharge;
-  else
-    gzerr << "<gazebo/motor/rated_voltage> parameter not set" << std::endl;
-
-  if (nhgz.getParam("motor/torque_constant", this->torqueConstant))
-    this->battCapacity = this->ratedCapacity;
-  else
-    gzerr << "<gazebo/motor/torque_constant parameter not set" << std::endl;
- 
-  if (nhgz.getParam("motor/max_rpm", this->maxRPM))
-  {
-  }
-  else
-    gzerr << "<gazebo/motor/max_rpm> parameter not set" << std::endl;
-  }
 
 }
