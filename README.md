@@ -2,25 +2,29 @@
 
 1. Ubuntu 12.04 x64 Virtual Machine via VMware Fusion 6.0.2
 2. ROS Hydro
-3. CloudSim Pre-Release 2.0.0 (simulator-stable)
+3. CloudSim Pre-Release 2.0.1 (simulator-stable)
 
-# Quick Deploy:
+# How to Deploy on a CloudSim Instance:
 
-## Clone repo in home folder
-hg clone http://bitbucket.org/ammpedro/cloudsim-ed-actuation
+## ssh into CloudSim machine
+instructions: http://gazebosim.org/wiki/Tutorials/CloudSim/connect_machines
 
-## Run deploy.bash
+## Clone deploy script
+hg clone https://bitbucket.org/hugomatic/cloudsim_ros_deploy
+cd cloudsim_ros_deploy
 
-. ~/cloudsim-ed-actuation/deploy.bash
+## Clone cloudsim-ed-actuation repository
+hg clone https://bitbucket.org/ammpedro/cloudsim-ed-actuation
 
-## Workspace Location
-~/code/ws/src/cloudsim-ed-actuation
+## Run deploy script
+./deploy.bash ammpedro cloudsim-ed-actuation
 
-## Launch a task
-roslaunch cloudsim_ed_actuation cloudsim_ed_actuation_challenge_01.launch
+## Start a launch file in CloudSim
+ROS Package: cloudsim_ed_actuation
+Launch File: cloudsim_ed_actuation_challenge_01.launch
+Bash File: /home/ubuntu/cloudsim-ed-actuation/src/cloudsim-ed-actuation/setup.bash
 
-
-#How to install on a CloudSim instance
+#How to install manually on a CloudSim instance
 
 ## create catkin workspace
 cd /home/ubuntu
