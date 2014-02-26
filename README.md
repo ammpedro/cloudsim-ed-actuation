@@ -13,9 +13,6 @@ instructions: http://gazebosim.org/wiki/Tutorials/CloudSim/connect_machines
 hg clone https://bitbucket.org/hugomatic/cloudsim_ros_deploy
 cd cloudsim_ros_deploy
 
-## Clone cloudsim-ed-actuation repository
-hg clone https://bitbucket.org/ammpedro/cloudsim-ed-actuation
-
 ## Run deploy script
 ./deploy.bash ammpedro cloudsim-ed-actuation
 
