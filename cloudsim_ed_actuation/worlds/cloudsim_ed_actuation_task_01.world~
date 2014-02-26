@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    <include>
+      <uri>model://basic_robot</uri>
+      <name>basic_robot</name>
+      <pose>0.0 0.0 0 0 0 0</pose>
+    </include>
+    
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_0</name>
+      <pose>1.0 1.0 0.0 0 0 0</pose>
+    </include>
+
+    <include>
+          <uri>model://gate</uri>
+      <name>gate_1</name>
+      <pose>2.0 1.0 0.0 0 0 0</pose>
+    </include>
+        
+    
+    <plugin filename="libGateScoringPlugin.so" name="gate_scoring">
+      <score_file>/tmp/gate/score.log</score_file>
+    </plugin>
+    
+    <plugin filename="libgazebo_ros_api_plugin.so" name="gazebo_ros">
+
+  </world>
+</sdf>

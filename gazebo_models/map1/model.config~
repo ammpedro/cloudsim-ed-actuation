@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<model>
+  <name>Basic Robot</name>
+  <version>1.0</version>
+  <sdf version='1.4'>model.sdf</sdf>
+
+  <author>
+   <name>ammp</name>
+   <email>me@my.email</email>
+  </author>
+
+  <description>
+    Basic robot from http://gazebosim.org/wiki/Tutorials/1.9/build_robot/mobile_base.
+  </description>
+</model>

@@ -1,0 +1,14 @@
+<package>
+  <name>gate_number_1</name>
+  <version>2.2.2</version>
+  <description>
+     gate number models
+  </description>
+  <author>osrf</author>
+  <author email="ichen@osrfoundation.org">osrf</author>
+  <maintainer email="ichen@osrfoundation.org">osrf</maintainer>
+  <license>BSD</license>
+  <url type="website">http://gazebosim.org</url>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+</package>
