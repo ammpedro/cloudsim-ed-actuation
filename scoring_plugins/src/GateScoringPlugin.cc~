@@ -544,4 +544,3 @@ bool GateScoringPlugin::FindGates()
 }
 
 GZ_REGISTER_WORLD_PLUGIN(GateScoringPlugin)
-

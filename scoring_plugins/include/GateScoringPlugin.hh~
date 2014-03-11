@@ -179,7 +179,6 @@ namespace gazebo
     /// \brief List of all the gates in the world. We assume that gates have
     /// the names: gate_1, gate_2, ..., gate_n.
     private: std::list<Gate> gates;
-    private: std::list<Gate> gateCheck;
 
     /// \brief Which gate is expected next, expressed as an iterator into
     /// this->gates.

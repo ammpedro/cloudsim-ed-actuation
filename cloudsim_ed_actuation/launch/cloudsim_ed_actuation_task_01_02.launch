@@ -1,0 +1,20 @@
+<launch>
+<!--
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find cloudsim_ed_actuation)/worlds/cloudsim_ed_actuation_task_01_02.world"/>
+
+  </include>
+  -->
+
+  <arg name="gzname" default="gzserver"/>
+  <arg name="gzworld" default="$(find cloudsim_ed_actuation)/worlds/cloudsim_ed_actuation_task_01_02.world"/>
+  <arg name="extra_gazebo_args" default="-q" />
+
+  <!-- start gazebo -->
+  <include file="$(find cloudsim_ed_actuation)/launch/cloud-ed.launch">
+    <arg name="gzname" value="$(arg gzname)"/>
+    <arg name="gzworld" value="$(arg gzworld)"/>
+    <arg name="extra_gazebo_args" value="$(arg extra_gazebo_args)"/>
+  </include>
+    
+</launch>
