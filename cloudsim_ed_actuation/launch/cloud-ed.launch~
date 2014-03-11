@@ -19,13 +19,13 @@
     <!-- nominal voltage = Volts -->
     <param name="/battery/nominal_voltage" type="double" value="12" />
     <!-- Initial Charge % -->
-    <param name="/battery/initial_charge" type="double" value="100" />
+    <param name="/battery/initial_charge" type="double" value="80" />
 
 
   <!-- initial motor parameters -->
 
     <!-- rated motor voltage = Volts -->
-    <param name="/motor/rated_voltage" type="double" value="24" />
+    <param name="/motor/rated_voltage" type="double" value="12" />
     <!-- Kt = torque constant value = Nm/A -->
     <param name="/motor/torque_constant" type="double" value="0.21" />
     <!-- max revolutions per minute -->

@@ -264,6 +264,14 @@ namespace gazebo {
 
       publishOdometry(seconds_since_last_update);
 
+      ros::NodeHandle nhgz("gazebo");
+      double changeTorque = 0.0;
+      if (nhgz.getParam("motor/torque_constant", changeTorque))
+      {
+        joints[LEFT]->SetMaxForce(0, changeTorque);
+        joints[RIGHT]->SetMaxForce(0, changeTorque);
+      }
+
       // Update robot in case new velocities have been requested
       getWheelVelocities();
       joints[LEFT]->SetVelocity(0, wheel_speed_[LEFT] / wheel_diameter_);

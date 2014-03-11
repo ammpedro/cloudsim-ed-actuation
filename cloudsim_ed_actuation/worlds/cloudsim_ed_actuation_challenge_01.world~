@@ -15,12 +15,12 @@
     <include>
           <uri>model://ramp_15</uri>
       <name>ramp_1</name>
-      <pose>-2.938300 -2.515268 0 0 -0 0</pose>
+      <pose>2.408289 -2.315434 0 0 -0 0</pose>
     </include> 
     <include>
           <uri>model://ramp_10</uri>
       <name>ramp_2</name>
-      <pose>-1.537976 -5.261581 0 0 -0 -1.570801</pose>
+      <pose>-3.101436 1.332195 0 0 -0 0</pose>
     </include> 
 
 
@@ -57,19 +57,19 @@
     <include>
           <uri>model://gate</uri>
       <name>gate_1</name>
-      <pose>-2.93822 2.06311 0 0 0 -1.5708</pose>
+      <pose>0.043676 4.94979 0 0 -0 0</pose>
     </include>
 
     <include>
           <uri>model://gate</uri>
       <name>gate_2</name>
-      <pose>-2.849068 -2.796170 0 0 0 -1.5708</pose>
+      <pose>2.566722 2.195540 0 0 0 -1.5708</pose>
     </include>
 
     <include>
           <uri>model://gate</uri>
       <name>gate_3</name>
-      <pose>-1.96504 -5.32161 0 0 -0 0</pose>
+      <pose>2.554212 -2.695355 0 0 -0 -1.5708</pose>
     </include>
 
     <include>
@@ -81,13 +81,13 @@
     <include>
           <uri>model://gate</uri>
       <name>gate_5</name>
-      <pose>-0.052516 -0.211698 0 0 -0 0</pose>
+      <pose>-2.946659 -2.340270 0 0 -0 -1.570796</pose>
     </include>
 
     <include>
           <uri>model://gate</uri>
       <name>gate_6</name>
-      <pose>0.043676 4.94979 0 0 -0 0</pose>
+      <pose>-2.981602 2.100950 0 0 0 -1.5708</pose>
     </include>
 
     <include>

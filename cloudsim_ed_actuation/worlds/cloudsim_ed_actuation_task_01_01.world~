@@ -14,11 +14,10 @@
     </include>
     
     <include>
-          <uri>model://map_10square</uri>
-      <name>map_1</name>
+      <uri>model://map3</uri>
+      <name>map</name>
       <pose>2.83802 3.77306 0 0 -0 0</pose>
     </include> 
-    <include>
 
     <include>
       <uri>model://asphalt_plane</uri>
