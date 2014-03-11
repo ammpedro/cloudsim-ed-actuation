@@ -14,11 +14,10 @@
     </include>
     
     <include>
-          <uri>model://map_10square</uri>
-      <name>map_1</name>
-      <pose>2.83802 3.77306 0 0 -0 0</pose>
+      <uri>model://map3</uri>
+      <name>map</name>
+      <pose>5.695124 1.411139 0 0 -0 0</pose>
     </include> 
-    <include>
 
     <include>
       <uri>model://asphalt_plane</uri>
@@ -29,13 +28,13 @@
     <include>
           <uri>model://construction_cone</uri>
       <name>start_cone</name>
-      <pose>-6.00456 5.50462 0.049999 -2e-06 -2e-06 1.61559e-27</pose>
+      <pose>1.5 0 0 0 0 0</pose>
     </include> 
 
     <include>
           <uri>model://construction_cone</uri>
       <name>end_cone</name>
-      <pose>4.9528 -5.46202 0.049999 -2e-06 2e-06 -1.61559e-27</pose>
+      <pose>-1.5 0 0 0 0 0</pose>
     </include> 
 
     

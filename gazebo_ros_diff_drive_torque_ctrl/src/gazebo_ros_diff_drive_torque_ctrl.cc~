@@ -134,6 +134,14 @@ namespace gazebo {
       this->command_topic_ = _sdf->GetElement("commandTopic")->Get<std::string>();
     }
 
+    this->command_topic2_ = "cmd_force";
+    if (!_sdf->HasElement("commandTopic")) {
+      ROS_WARN("GazeboRosDiffDriveTorqueCtrl Plugin (ns = %s) missing <commandTopic2>, defaults to \"%s\"",
+          this->robot_namespace_.c_str(), this->command_topic2_.c_str());
+    } else {
+      this->command_topic2_ = _sdf->GetElement("commandTopic2")->Get<std::string>();
+    }
+
     this->odometry_topic_ = "odom";
     if (!_sdf->HasElement("odometryTopic")) {
       ROS_WARN("GazeboRosDiffDriveTorqueCtrl Plugin (ns = %s) missing <odometryTopic>, defaults to \"%s\"",
@@ -255,6 +263,14 @@ namespace gazebo {
     if (seconds_since_last_update > update_period_) {
 
       publishOdometry(seconds_since_last_update);
+
+      ros::NodeHandle nhgz("gazebo");
+      double changeTorque = 0.0;
+      if (nhgz.getParam("motor/torque_constant", changeTorque))
+      {
+        joints[LEFT]->SetMaxForce(0, changeTorque);
+        joints[RIGHT]->SetMaxForce(0, changeTorque);
+      }
 
       // Update robot in case new velocities have been requested
       getWheelVelocities();
