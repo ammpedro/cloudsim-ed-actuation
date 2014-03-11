@@ -421,6 +421,7 @@ void GateScoringPlugin::OnUpdate(const common::UpdateInfo &_info)
       // first gate passed
       // Force score output so that this event appears in the log
       forceLogScore = true;
+      this->completionScore += 1;
       this->StartClock(simTime, wallTime, scoreMsg);
     }
   }
@@ -544,4 +545,3 @@ bool GateScoringPlugin::FindGates()
 }
 
 GZ_REGISTER_WORLD_PLUGIN(GateScoringPlugin)
-

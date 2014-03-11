@@ -194,7 +194,7 @@ void BatteryModelPlugin::Load(physics::ModelPtr _model,
     //      boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1)
        //   ros::VoidPtr(), &queue_);
 
-  cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("/set_force", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
+  cmd_vel_subscriber_ = this->rosNode->subscribe<geometry_msgs::Twist>("/set_vel", 1, boost::bind(&BatteryModelPlugin::cmdVelCallback, this, _1));
 
   cmd_vel_throttle_publisher_ = this->rosNode->advertise<geometry_msgs::Twist>("/dd/cmd_vel", 1);
 
@@ -329,25 +329,25 @@ void BatteryModelPlugin::SetParameters()
   {    
     if (motorProfile.compare("small") == 0)
     {
-        this->ratedMotorVoltage = 0.0;
-        this->torqueConstant = 0.0;
-        this->maxRPM = 0.0;
+        this->ratedMotorVoltage = 6.0;
+        this->torqueConstant = 0.21;
+        this->maxRPM = 1000;
         motorProfile = "setSmall";
     }
 
     else if (motorProfile.compare("medium") == 0)
     {
         this->ratedMotorVoltage = 12.0;
-        this->torqueConstant = 0.21;
+        this->torqueConstant = 1.2;
         this->maxRPM = 9960;
         motorProfile = "setMedium";
     }
 
     else if (motorProfile.compare("large") == 0)
     {
-        this->ratedMotorVoltage = 0.0;
-        this->torqueConstant = 0.0;
-        this->maxRPM = 0.0;
+        this->ratedMotorVoltage = 24.0;
+        this->torqueConstant = 7.9;
+        this->maxRPM = 1033;
         motorProfile = "setLarge";
     }
   }
