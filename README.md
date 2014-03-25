@@ -16,7 +16,7 @@ cd cloudsim_ros_deploy
 ## Run deploy script
 ./deploy.bash ammpedro cloudsim-ed-actuation
 
-## Start a launch file in CloudSim
+## Use CloudSim Launch Task UI
 ROS Package: cloudsim_ed_actuation
 Launch File: cloudsim_ed_actuation_challenge_01.launch
 Bash File: /home/ubuntu/cloudsim-ed-actuation/src/cloudsim-ed-actuation/setup.bash
